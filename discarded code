@@ -1,0 +1,118 @@
+function checkNeighbourIfBomb( arr ) {
+    let arrOfSquares = arr;
+    let numOfBombs = [];
+
+    for (let row = 0; row < arrOfSquares.length -1; row++) {
+        for (let col = 0; col < arrOfSquares[row].length -1; col++) {
+            if (!arrOfSquares[row][col].isBomb) {
+                if (row === 0 && col === 0) {
+                    if (arrOfSquares[row][col+1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col+1].isBomb) { numOfBombs.push(1) };
+
+                } else if (row === 0 && col === arrOfSquares[row].length - 1) {
+                    if (arrOfSquares[row][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col].isBomb) { numOfBombs.push(1) };
+
+                } else if (row === arrOfSquares.length -1 && col === 0) {
+                    if (arrOfSquares[row-1][col].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row-1][col+1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row][col+1].isBomb) { numOfBombs.push(1) };
+
+                } else if (row === arrOfSquares.length -1 && col === arrOfSquares[row].length - 1) {
+                    if (arrOfSquares[row-1][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row-1][col].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row][col-1].isBomb) { numOfBombs.push(1) };
+
+                } else if (row === 0) {
+                    if (arrOfSquares[row][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row][col+1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col+1].isBomb) { numOfBombs.push(1) };
+
+                } else if (row === arrOfSquares.length -1) {
+                    if (arrOfSquares[row-1][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row-1][col].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row-1][col+1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row][col+1].isBomb) { numOfBombs.push(1) };
+
+                } else if (col === 0) {
+                    if (arrOfSquares[row-1][col].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row-1][col+1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row][col+1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col+1].isBomb) { numOfBombs.push(1) };
+
+                } else if (col === arrOfSquares[row].length - 1) {
+                    if (arrOfSquares[row-1][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row-1][col].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col].isBomb) { numOfBombs.push(1) };
+
+                } else {
+                    if (arrOfSquares[row-1][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row-1][col].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row-1][col+1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row][col+1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col-1].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col].isBomb) { numOfBombs.push(1) };
+                    if (arrOfSquares[row+1][col+1].isBomb) { numOfBombs.push(1) };
+                    
+                }
+                let bombs = numOfBombs.reduce((acc, val) => acc + val, 0)
+                arrOfSquares[row][col].hasNum = bombs;
+                numOfBombs = [];
+            }
+        }
+    }
+    return arrOfSquares;
+}
+
+function drawSquares( mineField ) {
+    for (let row = 0; row <= mineField.length -1; row++) {
+        for (let col = 0; col <= mineField[row].length -1; col++) {
+            // Skapar ramen på rutan
+            ctx.beginPath();
+            ctx.rect(mineField[row][col].posX, mineField[row][col].posY, squareW, squareH,);
+            ctx.strokeStyle = 'black'
+            ctx.stroke();
+            ctx.closePath;
+
+            // Om det finns en bomb, skapar den
+            if (mineField[row][col].isBomb) {
+                ctx.beginPath();
+                ctx.arc(mineField[row][col].posX + squareW / 2, mineField[row][col].posY + squareH / 2, squareW/2 - 2, 0, 2*Math.PI);
+                ctx.fillStyle = 'red';
+                ctx.fill();
+            }
+
+            // Skriver ut siffran
+            if (!mineField[row][col].isBomb && mineField[row][col].hasNum != 0) {
+                ctx.font = '16px arial';
+                ctx.fillStyle = 'black';
+                ctx.fillText(`${mineField[row][col].hasNum}`, mineField[row][col].posX + 5, mineField[row][col].posY +16)
+            }
+            
+            if (!mineField[row][col].revealed) {
+                ctx.beginPath();
+                ctx.rect(mineField[row][col].posX, mineField[row][col].posY, squareW, squareH,);
+                ctx.fillStyle = 'grey'
+                ctx.fill();
+                ctx.closePath;
+            }
+
+            // Skapar en lyssnare på canvas efter klick
+            canvas.addEventListener('click', event => {
+                if (event.layerX > mineField[row][col].posX && event.layerX < mineField[row][col].posX + 20 && event.layerY > mineField[row][col].posY && event.layerY < mineField[row][col].posY + 20) {                    
+                    mineField[row][col].revealed = true;
+                    drawSquares(mineField)
+                }
+            })
+        }
+    }
+}
