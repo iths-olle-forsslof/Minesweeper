@@ -1,7 +1,9 @@
 class Cell {
-    constructor( i, j, w, bombs ) {
+    constructor( i, j, w, bombs, numOfCols, numOfRows ) {
         this.col = i,
         this.row = j,
+        this.numOfCols = numOfCols;
+        this.numOfRows = numOfRows;
         this.size = w,
         this.posX= this.col * this.size;
         this.posY= this.row * this.size;
@@ -11,7 +13,7 @@ class Cell {
         this.isFlagged = false;
         this.gameStarted = false;
         this.gameOver = false;
-        this.numOfCells = cols * rows;
+        this.numOfCells = numOfCols * numOfRows;
         this.numOfBombs = bombs;
         this.grid;
     }
@@ -34,66 +36,80 @@ class Cell {
                 }
             })
             if (this.numOfCells - numRevealed.length === this.numOfBombs) {
-                gameWon();
+                game.gameWon();
             }
         })
     }
 
     show() {
-        if (this.revealed){
-            // ctx.clearRect(this.posX, this.posY, this.size, this.size)
-            ctx.beginPath();
-            ctx.rect(this.posX, this.posY, this.size, this.size,);
-            ctx.fillStyle = '#75d6e0';
-            ctx.fill();
-            ctx.closePath();
+        if (!this.revealed) {
+                // game.ctx.beginPath();
+                // game.ctx.rect(this.posX, this.posY, this.size, this.size,);
+                // game.ctx.fillStyle = '#75d6e0';
+                // game.ctx.fill();
+                // game.ctx.closePath();
 
-            ctx.beginPath();
-            ctx.rect(this.posX, this.posY, this.size, this.size,);
-            ctx.strokeStyle = '#606894';
-            ctx.stroke();
-            ctx.closePath();
+            game.ctx.beginPath();
+            game.ctx.rect(this.posX, this.posY, this.size, this.size,);
+            game.ctx.strokeStyle = '#606894';
+            game.ctx.stroke();
+            game.ctx.closePath();
+        }
+
+        if (this.revealed){
+            // game.ctx.clearRect(this.posX, this.posY, this.size, this.size)
+            game.ctx.beginPath();
+            game.ctx.rect(this.posX, this.posY, this.size, this.size,);
+            game.ctx.fillStyle = '#75d6e0';
+            game.ctx.fill();
+            game.ctx.closePath();
+
+            game.ctx.beginPath();
+            game.ctx.rect(this.posX, this.posY, this.size, this.size,);
+            game.ctx.strokeStyle = '#606894';
+            game.ctx.stroke();
+            game.ctx.closePath();
 
             // Skriver ut bomben
             if (this.isBomb) {
                 
-                ctx.beginPath();
-                ctx.fillStyle = '#606894'
-                ctx.fillRect(this.posX + 1, this.posY + 1, this.size -2, this.size -2,);
-                ctx.fill();
-                ctx.closePath();
+                game.ctx.beginPath();
+                game.ctx.fillStyle = '#606894'
+                game.ctx.fillRect(this.posX + 1, this.posY + 1, this.size -2, this.size -2,);
+                game.ctx.fill();
+                game.ctx.closePath();
                 
-                ctx.beginPath();
-                ctx.translate(this.size / 2, this.size / 2)
-                ctx.arc(this.posX, this.posY, this.size / 3, 0, 2*Math.PI);
-                ctx.fillStyle = 'black';
-                ctx.fill();
-                ctx.closePath();
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                game.ctx.beginPath();
+                game.ctx.translate(this.size / 2, this.size / 2)
+                game.ctx.arc(this.posX, this.posY, this.size / 3, 0, 2*Math.PI);
+                game.ctx.fillStyle = 'black';
+                game.ctx.fill();
+                game.ctx.closePath();
+                game.ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-                ctx.beginPath();
-                ctx.rect(this.posX, this.posY, this.size, this.size,);
-                ctx.strokeStyle = '#606894';
-                ctx.stroke();
-                ctx.closePath();
+                game.ctx.beginPath();
+                game.ctx.rect(this.posX, this.posY, this.size, this.size,);
+                game.ctx.strokeStyle = '#606894';
+                game.ctx.stroke();
+                game.ctx.closePath();
 
                 // Skriver ut siffran
             } else {
 
-                ctx.beginPath();
-                ctx.rect(this.posX, this.posY, this.size, this.size,);
-                ctx.strokeStyle = '#606894';
-                ctx.stroke();
-                ctx.closePath();
+                game.ctx.beginPath();
+                game.ctx.rect(this.posX, this.posY, this.size, this.size,);
+                game.ctx.strokeStyle = '#606894';
+                game.ctx.stroke();
+                game.ctx.closePath();
                 
                 if (this.hasNum > 0) {
-                    ctx.font = '16px arial';
-                    ctx.translate(this.size / 2, this.size / 2 +2)
-                    ctx.fillStyle = '#606894';
-                    ctx.textAlign = 'center'
-                    ctx.textBaseline = "middle";
-                    ctx.fillText(`${this.hasNum}`, this.posX, this.posY);   
-                    ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    game.ctx.font = '16px arial';
+                    game.ctx.translate(this.size / 2, this.size / 2 +2)
+                    game.ctx.fillStyle = '#606894';
+                    game.ctx.textAlign = 'center'
+                    game.ctx.textBaseline = "middle";
+                    game.ctx.fillText(`${this.hasNum}`, this.posX, this.posY);   
+                    game.ctx.setTransform(1, 0, 0, 1, 0, 0);
 
                     // ctx.beginPath();
                     // ctx.rect(this.posX, this.posY, this.size, this.size,);
@@ -106,7 +122,7 @@ class Cell {
         }
     }
 
-    checkNeighbor( grid ) {
+    checkNeighbor(grid) {
         if (this.isBomb) {
             this.hasNum = -1;
         
@@ -116,7 +132,7 @@ class Cell {
                 for (let y = -1; y <= 1; y++) {
                     let i = this.row + x;
                     let j = this.col + y;
-                    if (i > -1 && i < cols && j > -1 && j < rows) {
+                    if (i > -1 && i < this.numOfCols && j > -1 && j < this.numOfRows) {
                         let neighbor = grid[i][j]
                         if (neighbor.isBomb) {
                             total++
@@ -131,26 +147,26 @@ class Cell {
     flag() {
         if (!this.isFlagged || this.gameOver) {
             // flag
-            ctx.translate(this.size - 10, this.size -20)
-            ctx.beginPath();
-            ctx.moveTo(this.posX, this.posY);
-            ctx.lineTo(this.posX - 10, this.posY + 3);
-            ctx.lineTo(this.posX, this.posY + 8);
-            ctx.fillStyle = '#fffbb3';
-            ctx.fill();
+            game.ctx.translate(this.size - 10, this.size -20)
+            game.ctx.beginPath();
+            game.ctx.moveTo(this.posX, this.posY);
+            game.ctx.lineTo(this.posX - 10, this.posY + 3);
+            game.ctx.lineTo(this.posX, this.posY + 8);
+            game.ctx.fillStyle = '#c92448';
+            game.ctx.fill();
             //pole
-            ctx.beginPath();
-            ctx.moveTo(this.posX + 1, this.posY);
-            ctx.lineTo(this.posX-1, this.posY + 15);
-            ctx.strokeStyle = '#fc4103';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            ctx.beginPath();
+            game.ctx.beginPath();
+            game.ctx.moveTo(this.posX + 1, this.posY);
+            game.ctx.lineTo(this.posX-1, this.posY + 15);
+            game.ctx.strokeStyle = '#57748f';
+            game.ctx.lineWidth = 2;
+            game.ctx.stroke();
+            game.ctx.setTransform(1, 0, 0, 1, 0, 0);
+            game.ctx.beginPath();
             
             this.isFlagged = true;
         } else {
-            ctx.clearRect(this.posX, this.posY, this.size, this.size);
+            game.ctx.clearRect(this.posX, this.posY, this.size, this.size);
             this.isFlagged = false;
             this.show();
         }
@@ -162,7 +178,7 @@ class Cell {
             for (let y = -1; y <= 1; y++) {
                 let i = this.row + x;
                 let j = this.col + y;
-                if (i > -1 && i < cols && j > -1 && j < rows) {
+                if (i > -1 && i < this.numOfCols && j > -1 && j < this.numOfRows) {
                     let neighbor = this.grid[i][j]
                     
                     if (!neighbor.isBomb && !neighbor.revealed) {
