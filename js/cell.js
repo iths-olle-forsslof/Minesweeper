@@ -174,15 +174,18 @@ class Cell {
 
     floodFill() {
         // if this is 0 reveal all neighbours who isn't revealed and isn't a bomb
-        for (let x = -1; x <= 1; x++) {
-            for (let y = -1; y <= 1; y++) {
-                let i = this.row + x;
-                let j = this.col + y;
-                if (i > -1 && i < this.numOfCols && j > -1 && j < this.numOfRows) {
-                    let neighbor = this.grid[i][j]
-                    
-                    if (!neighbor.isBomb && !neighbor.revealed) {
-                        neighbor.reveal();
+        if(this.revealed && this.hasNum <= 0){
+
+            for (let x = -1; x <= 1; x++) {
+                for (let y = -1; y <= 1; y++) {
+                    let i = this.row + x;
+                    let j = this.col + y;
+                    if (i > -1 && i < this.numOfCols && j > -1 && j < this.numOfRows) {
+                        let neighbor = this.grid[i][j]
+                        
+                        if (!neighbor.isBomb && !neighbor.revealed) {
+                            neighbor.reveal();
+                        }
                     }
                 }
             }

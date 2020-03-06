@@ -1,5 +1,3 @@
-// skicka med klickparametrarna i initfunktionen och generera banan efter dem.
-// "Om klickparam != 0 init again"
 class MineSweeper {
     constructor() {
         this.canvas = document.querySelector('canvas')
@@ -38,7 +36,7 @@ class MineSweeper {
             // ctx.closePath();
         }
     }
-    // Här skapas kartan, först alla celler, sedan fylls cellerna med bomber
+    
     init = (colPos, rowPos, difficulty) => {
         let grid = []
         let row = []
@@ -53,7 +51,7 @@ class MineSweeper {
             row = [];
         }
         
-        // Places bombs randomly // IT WORKS
+        // Places bombs randomly
         this.board = this.makeBombCell(grid);
         
         // Print numbers on all neighbors to bombs
@@ -101,29 +99,6 @@ class MineSweeper {
         }
         return grid
     }
-
-    // checkNeighbor(cell, grid) {
-    //     if (cell.isBomb) {
-    //         cell.hasNum = -1;
-    //     } else {
-    //         let total = 0;
-    //         for (let x = -1; x <= 1; x++) {
-    //             for (let y = -1; y <= 1; y++) {
-    //                 let i = cell.row + x;
-    //                 let j = cell.col + y;
-    //                 if (i > -1 && i < cell.col && j > -1 && j < cell.row) {
-    //                     let neighbor = grid[i][j]
-    //                     if (neighbor.isBomb) {
-    //                         total++
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //         cell.hasNum = total;
-    //         console.log('cellNum = ', cell.hasNum);
-    //     }
-    //     return grid
-    // }
     
     gameOver = () => {
         this.board.forEach( row => {
@@ -187,90 +162,53 @@ game.canvas.addEventListener('contextmenu', event => {
     }
 })
 
-// Original init function
-// function init(difficulty) {
-//     let grid = []
-//     let row = []
+// ANIMATION TRYOUTS
 
-//     for (let i = 0; i < rows; i++) {
-//         for (let j = 0; j < cols; j++) {
-//             const square = new Cell( j, i, cellSize, difficulty );
-//             row.push(square);
-//         }
-//         grid.push(row);
-//         row = [];
+
+// let x = 100;
+// let y = 100;
+
+// function Lid(x, y, size, xSpeed, ySpeed) {
+//     this.x = x;
+//     this.y = y;
+//     this.width = size;
+//     this.height = size;
+//     this.xSpeed = xSpeed;
+//     this.ySpeed = ySpeed;
+
+//     this.draw = () => {
+//         game.ctx.fillStyle = 'hotpink';
+//         game.ctx.fillRect(this.x, this.y, this.size, this.size);
 //     }
 
-//     let board = makeBombCell( grid );
+//     this.update = () => {
 
-//     board.forEach( row => {
-//         row.forEach( cell => {
-//             cell.checkNeighbor( board )
-//         })
-//     })
-
-//     board.forEach(row => {
-//         row.forEach(cell => {
-//             cell.grid = board;
-//             cell.show();
-//         })
-//     })
-
-//     let game = board;
-
-//     canvas.addEventListener('click', event => {
-//         game.forEach( row => {
-//             row.forEach( cell => {
-//                 if (event.layerX > cell.posX && event.layerX < cell.posX + cellSize && event.layerY > cell.posY && event.layerY < cell.posY + cellSize) {
-//                     if (!gameStarted){
-//                         while (cell.hasNum != 0){
-//                             console.log(cell);
-//                             init(difficulty);
-//                         }
-//                         if (!cell.isBomb && cell.hasNum === 0) {
-//                             gameStarted = true;
-//                             cell.reveal();
-//                             cell.show();
-//                         } else {
-//                             init(difficulty);
-//                             // gameStarted = true;
-//                             // gameOver(newGame)
-//                         }
-//                         gameStarted = true;
-//                     } else {
-//                         if (!cell.isBomb && !cell.isFlagged && !cell.revealed) {
-//                             cell.reveal();
-//                             cell.show();
-//                         } else if (cell.isBomb && !cell.isFlagged) {
-//                             gameOver(newGame);
-//                         }
-//                     }
-//                 }
-//             })
-//         })
-//     })
-
-//     return board;
+//         this.draw();
+//     }
 // }
 
+// let lid = new Lid(100, 100, 25);
 
 
-// easyBtn.addEventListener('click', () => {
-//     gameStarted = false;
-//     init(20);
-//     bombsLeft.innerText = 'Mines: 20';
+// function animate() {
+//     requestAnimationFrame(animate);
+//     // game.board.forEach(row => {
+//     //         row.forEach(cell => {
+//     //                 cell.show();
+//     //             })
+//     //         })
+//             game.ctx.clearRect(x,y,game.cellSize,game.cellSize)
+//             game.ctx.fillStyle = 'hotpink';
+//             game.ctx.fillRect(x, y, game.cellSize, game.cellSize);
+//             x+=1;
+//             y+=1;
+// }
+
+// game.canvas.addEventListener('click', () => {
+//     let posX = event.layerX;
+//     let posY = event.layerY;
+//     let colPos = Math.floor(posX / game.cellSize);
+//     let rowPos = Math.floor(posY / game.cellSize);
+//     animate();
 // })
-
-// mediumBtn.addEventListener('click', () => {
-//     gameStarted = false;
-//     init(40);
-//     bombsLeft.innerHTML = 'Mines: 40';
-// })
-
-// hardBtn.addEventListener('click', () => {
-//     gameStarted = false;
-//     init(120);
-//     bombsLeft.innerHTML = 'Mines: 80';
-// })
-
 
