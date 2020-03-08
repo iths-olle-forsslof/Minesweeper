@@ -37,14 +37,14 @@ class MineSweeper {
         }
     }
     
-    init = (colPos, rowPos, difficulty) => {
+    init = (rowPos, colPos, difficulty) => {
         let grid = []
         let row = []
         this.difficulty = difficulty
         
         for (let i = 0; i < this.rows; i++) {
             for (let j = 0; j < this.cols; j++) {
-                const square = new Cell(j, i, this.cellSize, this.difficulty, this.cols, this.rows);
+                const square = new Cell(i, j, this.cellSize, this.difficulty, this.cols, this.rows);
                 row.push(square);
             }
             grid.push(row);
@@ -63,7 +63,9 @@ class MineSweeper {
 
         // restart init function if clicked cell is not 0
         while (this.board[rowPos][colPos].hasNum != 0){
-            this.init(colPos, rowPos, this.difficulty);     
+            console.log(1);
+            
+            this.init(rowPos, colPos, this.difficulty);
         }
 
         if (this.board[rowPos][colPos].hasNum === 0){
@@ -105,7 +107,7 @@ class MineSweeper {
             row.forEach( cell => {
                 cell.gameOver = true;
                 cell.revealed = true;
-                cell.show();
+                cell.reveal();
                 if (cell.isFlagged) {
                     cell.flag();
                 }
@@ -131,7 +133,7 @@ game.canvas.addEventListener('click', event => {
     let rowPos = Math.floor(posY / game.cellSize);
     
     if (!game.gameStarted) {
-        game.init(colPos, rowPos, 10);
+        game.init(rowPos, colPos, 40);
         game.board[rowPos][colPos].reveal();
     }
 
@@ -162,6 +164,15 @@ game.canvas.addEventListener('contextmenu', event => {
     }
 })
 
+// game.canvas.addEventListener('mouseover', () => {
+//     let posX = event.layerX;
+//     let posY = event.layerY;
+//     let rowPos = Math.floor(posY / game.cellSize);
+//     let colPos = Math.floor(posX / game.cellSize);
+//     game.board[rowPos][colPos].color = 'rgba(255, 255, 255, .5)'
+// })
+
+
 // ANIMATION TRYOUTS
 
 
@@ -187,9 +198,6 @@ game.canvas.addEventListener('contextmenu', event => {
 //     }
 // }
 
-// let lid = new Lid(100, 100, 25);
-
-
 // function animate() {
 //     requestAnimationFrame(animate);
 //     // game.board.forEach(row => {
@@ -209,6 +217,6 @@ game.canvas.addEventListener('contextmenu', event => {
 //     let posY = event.layerY;
 //     let colPos = Math.floor(posX / game.cellSize);
 //     let rowPos = Math.floor(posY / game.cellSize);
-//     animate();
+//     game.board[rowPos][colPos].startAnimate()
 // })
 
