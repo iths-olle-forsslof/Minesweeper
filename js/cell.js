@@ -26,24 +26,20 @@ class Cell {
             this.startShowAnimation();
         } else {
             this.startBombClickAnimation();
+            setTimeout(() => {
+                game.writeGameOver();
+            }, 550)
         }
-        // this.show();
         setTimeout(() => {
             if (this.hasNum === 0) {
                 this.floodFill()
             }
-        }, 20)
+        }, 40)
         this.checkIfGameWon()
     };
 
     show() {
         if (!this.revealed) {
-                // game.ctx.beginPath();
-                // game.ctx.rect(this.posX, this.posY, this.size, this.size,);
-                // game.ctx.fillStyle = '#75d6e0';
-                // game.ctx.fill();
-                // game.ctx.closePath();
-
             game.ctx.clearRect(this.posX, this.posY, this.size, this.size,);
             game.ctx.beginPath();
             game.ctx.rect(this.posX, this.posY, this.size, this.size,);
@@ -91,7 +87,6 @@ class Cell {
 
                 // Skriver ut siffran
             } else {
-
                 game.ctx.beginPath();
                 game.ctx.rect(this.posX, this.posY, this.size, this.size,);
                 game.ctx.strokeStyle = '#606894';
@@ -99,20 +94,13 @@ class Cell {
                 game.ctx.closePath();
                 
                 if (this.hasNum > 0) {
-                    game.ctx.font = '16px arial';
+                    game.ctx.font = 'normal bold 16px arial';
                     game.ctx.translate(this.size / 2, this.size / 2 +2)
                     game.ctx.fillStyle = '#606894';
                     game.ctx.textAlign = 'center'
                     game.ctx.textBaseline = "middle";
                     game.ctx.fillText(`${this.hasNum}`, this.posX, this.posY);   
                     game.ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-                    // ctx.beginPath();
-                    // ctx.rect(this.posX, this.posY, this.size, this.size,);
-                    // ctx.strokeStyle = '#606894';
-                    // ctx.stroke();
-                    // ctx.closePath();
-                    
                 }
             }
         }
@@ -121,14 +109,14 @@ class Cell {
     checkNeighbor(grid) {
         if (this.isBomb) {
             this.hasNum = -1;
-        
+            
         } else {
             let total = 0;
             for (let x = -1; x <= 1; x++) {
                 for (let y = -1; y <= 1; y++) {
                     let i = this.row + x;
                     let j = this.col + y;
-                    if (i > -1 && i < this.numOfCols && j > -1 && j < this.numOfRows) {
+                    if (i > -1 && i < this.numOfRows && j > -1 && j < this.numOfCols) {
                         let neighbor = grid[i][j]
                         if (neighbor.isBomb) {
                             total++
@@ -176,7 +164,7 @@ class Cell {
                 for (let y = -1; y <= 1; y++) {
                     let i = this.row + x;
                     let j = this.col + y;
-                    if (i > -1 && i < this.numOfCols && j > -1 && j < this.numOfRows) {
+                    if (i > -1 && i < this.numOfRows && j > -1 && j < this.numOfCols) {
                         let neighbor = this.grid[i][j]
                         
                         if (!neighbor.isBomb && !neighbor.revealed) {
@@ -211,11 +199,13 @@ class Cell {
         requestAnimationFrame(this.startShowAnimation);
     }
 
-    // hoverAnimation = () => {
-    //     game.ctx.clearRect(this.posX, this.posY, this.size, this.size)
-    //     game.ctx.fillStyle = `rgba(255, 255, 255, .5)`;
-    //     game.ctx.fillRect(this.posX, this.posY, this.size, this.size);
-    // }
+    hoverAnimation = (row, col) => {
+        if (row === this.row && col === this.col) {
+            // game.ctx.clearRect(this.posX, this.posY, this.size, this.size)
+            game.ctx.fillStyle = `rgba(0, 255, 255, .5)`;
+            game.ctx.fillRect(this.posX, this.posY, this.size, this.size);
+        }
+    }
 
     startShowAnimation = () => {
         if (!this.moving) {
@@ -223,7 +213,7 @@ class Cell {
         }
         setTimeout(() => {
             this.moving = true;
-        }, 500);
+        }, 200);
         
         this.moving = false;
     }

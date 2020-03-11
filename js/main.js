@@ -3,7 +3,7 @@ class MineSweeper {
         this.canvas = document.querySelector('canvas')
         this.ctx = this.canvas.getContext('2d');
         this.cellSize = 25;
-        this.cols = 20;
+        this.cols = 30;
         this.rows = 20;
         this.width = this.cols * this.cellSize;
         this.height = this.rows * this.cellSize;
@@ -36,7 +36,7 @@ class MineSweeper {
             // ctx.closePath();
         }
     }
-    
+
     init = (rowPos, colPos, difficulty) => {
         let grid = []
         let row = []
@@ -114,12 +114,39 @@ class MineSweeper {
             })
         })
     }
-    
+
+    writeGameOver = () => {
+        let px;
+        for (let i = 0; i < this.width / 6.2; i++) {
+            px = i;
+            this.ctx.font = `normal bolder ${i}px arial`;
+            this.ctx.fillStyle = `rgba(${117 + i * 2}, ${214 + i * -1.3}, ${244 + i *-1.2}, 1)`;
+            this.ctx.textAlign = 'center'
+            this.ctx.textBaseline = "middle";
+            this.ctx.fillText(`GAME OVER`, this.width/2, this.height/2);
+        }
+        this.ctx.font = `normal bolder ${px}px arial`;
+            this.ctx.fillStyle = `rgba(${255}, ${255}, ${255}, 1)`;
+            this.ctx.textAlign = 'center'
+            this.ctx.textBaseline = "middle";
+            this.ctx.fillText(`GAME OVER`, this.width/2, this.height/2);
+    }
+
     gameWon = () => {
-        this.ctx.font = '24px arial';
-        this.ctx.fillStyle = 'black';
-        this.ctx.textAlign = 'center';
-        this.ctx.fillText(`You found all mines!`, this.width / 2, this.height / 2);
+        let px;
+        for (let i = 0; i < this.width / 6.2; i++) {
+            px = i;
+            this.ctx.font = `normal bolder ${i}px arial`;
+            this.ctx.fillStyle = `rgba(${117 + i * 2}, ${214 + i * -1.3}, ${244 + i *-1.2}, 1)`;
+            this.ctx.textAlign = 'center'
+            this.ctx.textBaseline = "middle";
+            this.ctx.fillText(`YOU WIN!`, this.width/2, this.height/2);
+        }
+        this.ctx.font = `normal bolder ${px}px arial`;
+            this.ctx.fillStyle = `rgba(${66}, ${245}, ${158}, 1)`;
+            this.ctx.textAlign = 'center'
+            this.ctx.textBaseline = "middle";
+            this.ctx.fillText(`YOU WIN!`, this.width/2, this.height/2);
     }
 }
 
@@ -133,7 +160,7 @@ game.canvas.addEventListener('click', event => {
     let rowPos = Math.floor(posY / game.cellSize);
     
     if (!game.gameStarted) {
-        game.init(rowPos, colPos, 40);
+        game.init(rowPos, colPos, 50);
         game.board[rowPos][colPos].reveal();
     }
 
@@ -144,6 +171,17 @@ game.canvas.addEventListener('click', event => {
         if (!game.board[rowPos][colPos].revealed && game.board[rowPos][colPos].isBomb) {
             game.gameOver();
         }
+    }
+})
+
+game.canvas.addEventListener('mouseover', (event) => {
+    console.log(event);
+    let posX = event.layerX;
+    let posY = event.layerY;
+    let colPos = Math.floor(posX / game.cellSize);
+    let rowPos = Math.floor(posY / game.cellSize);
+    if (!game.board[rowPos][colPos].revealed && game.gameStarted) {
+        game.board[rowPos][colPos].hoverAnimation(rowPos, colPos);
     }
 })
 
@@ -163,60 +201,3 @@ game.canvas.addEventListener('contextmenu', event => {
         }
     }
 })
-
-// game.canvas.addEventListener('mouseover', () => {
-//     let posX = event.layerX;
-//     let posY = event.layerY;
-//     let rowPos = Math.floor(posY / game.cellSize);
-//     let colPos = Math.floor(posX / game.cellSize);
-//     game.board[rowPos][colPos].color = 'rgba(255, 255, 255, .5)'
-// })
-
-
-// ANIMATION TRYOUTS
-
-
-// let x = 100;
-// let y = 100;
-
-// function Lid(x, y, size, xSpeed, ySpeed) {
-//     this.x = x;
-//     this.y = y;
-//     this.width = size;
-//     this.height = size;
-//     this.xSpeed = xSpeed;
-//     this.ySpeed = ySpeed;
-
-//     this.draw = () => {
-//         game.ctx.fillStyle = 'hotpink';
-//         game.ctx.fillRect(this.x, this.y, this.size, this.size);
-//     }
-
-//     this.update = () => {
-
-//         this.draw();
-//     }
-// }
-
-// function animate() {
-//     requestAnimationFrame(animate);
-//     // game.board.forEach(row => {
-//     //         row.forEach(cell => {
-//     //                 cell.show();
-//     //             })
-//     //         })
-//             game.ctx.clearRect(x,y,game.cellSize,game.cellSize)
-//             game.ctx.fillStyle = 'hotpink';
-//             game.ctx.fillRect(x, y, game.cellSize, game.cellSize);
-//             x+=1;
-//             y+=1;
-// }
-
-// game.canvas.addEventListener('click', () => {
-//     let posX = event.layerX;
-//     let posY = event.layerY;
-//     let colPos = Math.floor(posX / game.cellSize);
-//     let rowPos = Math.floor(posY / game.cellSize);
-//     game.board[rowPos][colPos].startAnimate()
-// })
-
