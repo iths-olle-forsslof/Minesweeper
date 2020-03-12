@@ -28,7 +28,7 @@ class Cell {
             this.startBombClickAnimation();
             setTimeout(() => {
                 game.writeGameOver();
-            }, 550)
+            }, 450)
         }
         setTimeout(() => {
             if (this.hasNum === 0) {
@@ -184,10 +184,11 @@ class Cell {
                     numRevealed.push(cell);
                 }
             })
-            if (this.numOfCells - numRevealed.length === this.numOfBombs) {
-                game.gameWon();
-            }
         })
+
+        if (this.numOfCells - numRevealed.length === this.numOfBombs) {
+            game.gameWon();
+        }
     }
 
     showAnimation = () => {
@@ -197,14 +198,6 @@ class Cell {
         game.ctx.fillRect(this.posX, this.posY, this.size, this.size);
         this.alpha -= .2;
         requestAnimationFrame(this.startShowAnimation);
-    }
-
-    hoverAnimation = (row, col) => {
-        if (row === this.row && col === this.col) {
-            // game.ctx.clearRect(this.posX, this.posY, this.size, this.size)
-            game.ctx.fillStyle = `rgba(0, 255, 255, .5)`;
-            game.ctx.fillRect(this.posX, this.posY, this.size, this.size);
-        }
     }
 
     startShowAnimation = () => {
@@ -224,7 +217,7 @@ class Cell {
         }
         setTimeout(() => {
             this.gameOver = false;
-        }, 500);
+        }, 400);
         
         this.gameOver = true;
     }
@@ -234,7 +227,7 @@ class Cell {
         this.show();
         game.ctx.fillStyle = `rgba(255, 74, 61, ${this.alpha})`;
         game.ctx.fillRect(this.posX, this.posY, this.size, this.size);
-        this.alpha -= .05;
+        this.alpha -= .1;
         requestAnimationFrame(this.startBombClickAnimation);
     }
 }

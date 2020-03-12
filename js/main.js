@@ -1,3 +1,8 @@
+let easy = document.querySelector('#easy');
+let medium = document.querySelector('#medium');
+let hard = document.querySelector('#hard');
+let reset = document.querySelector('.restart-btn');
+
 class MineSweeper {
     constructor() {
         this.canvas = document.querySelector('canvas')
@@ -9,14 +14,13 @@ class MineSweeper {
         this.height = this.rows * this.cellSize;
         this.gameStarted = false;
         this.difficulty;
-        this.bombsLeft = document.querySelector('.bombs-left');
         this.board;
         this.canvas.setAttribute('width', this.width)
         this.canvas.setAttribute('height', this.height)
     }
 
     drawGrid = () => {
-        for (let i = 0; i < this.cols; i++){
+        for (let i = 1; i < this.cols; i++){
             this.ctx.beginPath();
             this.ctx.moveTo(i * this.cellSize, 0);
             this.ctx.lineTo(i * this.cellSize, this.height);
@@ -26,7 +30,7 @@ class MineSweeper {
             this.ctx.closePath();
         }
         
-        for (let i = 0; i < this.rows; i++){
+        for (let i = 1; i < this.rows; i++){
             this.ctx.beginPath();
             this.ctx.moveTo(0, i * this.cellSize);
             this.ctx.lineTo(this.width, i * this.cellSize);
@@ -154,13 +158,14 @@ let game = new MineSweeper();
 game.drawGrid();
 
 game.canvas.addEventListener('click', event => {
+    let difficulty = easy.checked ? parseInt(easy.value) : medium.checked ? parseInt(medium.value) : hard.checked ? parseInt(hard.value) : 0;
     let posX = event.layerX;
     let posY = event.layerY;
     let colPos = Math.floor(posX / game.cellSize);
     let rowPos = Math.floor(posY / game.cellSize);
     
     if (!game.gameStarted) {
-        game.init(rowPos, colPos, 50);
+        game.init(rowPos, colPos, difficulty);
         game.board[rowPos][colPos].reveal();
     }
 
@@ -171,17 +176,6 @@ game.canvas.addEventListener('click', event => {
         if (!game.board[rowPos][colPos].revealed && game.board[rowPos][colPos].isBomb) {
             game.gameOver();
         }
-    }
-})
-
-game.canvas.addEventListener('mouseover', (event) => {
-    console.log(event);
-    let posX = event.layerX;
-    let posY = event.layerY;
-    let colPos = Math.floor(posX / game.cellSize);
-    let rowPos = Math.floor(posY / game.cellSize);
-    if (!game.board[rowPos][colPos].revealed && game.gameStarted) {
-        game.board[rowPos][colPos].hoverAnimation(rowPos, colPos);
     }
 })
 
@@ -200,4 +194,10 @@ game.canvas.addEventListener('contextmenu', event => {
             game.board[rowPos][colPos].show();
         }
     }
+})
+
+reset.addEventListener('mouseup', () => {
+    game.ctx.clearRect(0, 0, game.width, game.height)
+    game = new MineSweeper();
+    game.drawGrid();
 })

@@ -8,15 +8,30 @@ body {
     linear-gradient(36deg, rgba(91,238,197,1) 0%, rgba(119,254,250,1) 100%);
     background-size: 50px;
     height: 100vh;
+    font-family: 'Press Start 2P';
+    font-size: 12px;
+    color: #606894;
 
 }
 
 .container {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+#title {
+    font-size: 2.5rem;
+    text-shadow: 1px 1px rgb(66,66,66), 
+    2px 2px rgb(66,66,66),
+    3px 3px rgb(66,66,66);
+}
+
+.canvas-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 2rem;
     /* border: 3px solid seagreen; */
     border-radius: 1rem;
     font-family: 'Press Start 2P';
@@ -26,24 +41,87 @@ body {
     0px 2px 10px 3px rgba(0, 0, 0, .1);
 }
 
-button {
-    font-family: 'Press Start 2P';
-    border: 3px solid #606894;
-    border-radius: 5px;
-    padding: .3rem;
-    transition: .2s ease;
+.options-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.selection {
+    display: flex;
+    flex-direction: row;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin: 1rem;
+}
+
+.options input {
+    position: absolute;
+    opacity: 0;
     cursor: pointer;
 }
 
-button:active {
-    transform: scale(.9);
+.checkmark {
+    position: relative;
+    margin-bottom: .5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    padding: .1rem;
+    /* background-color: white; */
+    border: 2px solid #606894;    
+    border-radius: .2rem;
 }
 
-.bombs-left {
-    margin-top: 1rem;
+.options:hover input ~ .checkmark {
+    background-color: rgba(255, 255, 255, 0.452);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 2px -2px rgba(0, 0, 0, .3  );
+}
+
+.options:active input ~ .checkmark {
+    transform: translateY(1px);
+    box-shadow: none;
+    background-color: rgba(255, 255, 255, 0.719);
+}
+
+.options input:checked ~ .checkmark {
+    background: url(../img/x.svg) no-repeat center;
+}
+
+.restart-btn {
+    justify-self: flex-end;
+    margin: 1rem;
+    background-color: rgba(255, 255, 255, 0);
+    font-family: 'Press Start 2P';
+    color: #606894;
+    border: 2px solid #606894;
+    border-radius: .2rem;
+    padding: 0 1rem;
+    cursor: pointer;
+}
+
+.restart-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 2px -2px rgba(0, 0, 0, .3  );
+    background-color: rgba(255, 255, 255, 0.452);
+
+}
+
+.restart-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+    background-color: rgba(255, 255, 255, 0.719);
+
 }
 
 canvas {
     border: 2px solid #606894;
-    margin: 1rem;
+    margin: 0 1rem 1rem 1rem;
 }

@@ -8,24 +8,41 @@
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <p>work in progress</p>
     <div class="container">
-        <h2>
+        <h1 id="title">
             MineSweeper
-        </h2>
+        </h1>
+        <p>Click a tile to start the game</p>
         <p>Right click to flag a tile</p>
-        <!-- <nav>
-            <div class="display-mines">
 
-            </div>
-            <button class="easy">Easy</button>
-            <button class="medium">Medium</button>
-            <button class="hard">Hard</button>
-        </nav>
+        <div class="canvas-container">
+            <nav class="options-nav">
+                <section class="selection">
 
-        <section class="bombs-left"></section> -->
-        
-        <canvas></canvas>
+                    <label class="options">
+                        <input type="radio" id="easy"  checked="checked" name="radio" value="20">
+                        <span class="checkmark"></span>
+                        Easy
+                    </label>
+                    
+                    <label class="options">
+                        <input type="radio" id="medium" name="radio" value="60">
+                        <span class="checkmark"></span>
+                        Medium
+                    </label>
+                    
+                    <label class="options hard">
+                        <input type="radio" id="hard" name="radio" value="100">
+                        <span class="checkmark"></span>
+                        Hard
+                    </label>
+                    
+                </section>
+                <button class="restart-btn">RESET</button>
+            </nav>
+
+            <canvas></canvas>
+        </div>
     
     </div>
     <script src="js/cell.js"></script>
